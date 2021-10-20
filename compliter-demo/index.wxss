@@ -1,0 +1,5 @@
+/* compiler-test/index.wxss */
+.comtainer {
+  width: 100rpx;
+  background: red;
+}
