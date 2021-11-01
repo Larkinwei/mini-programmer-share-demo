@@ -1,5 +1,5 @@
 <!--compiler-test/index.wxml-->
 <view class="container" >
-  <text>compiler-test/index.wxml</text>
+  <text>wxml编译</text>
   <view >{{name}}</view>
 </view>
