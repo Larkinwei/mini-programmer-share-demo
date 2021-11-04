@@ -6,10 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+<style>
+  .email {
+    color: red;
+  }
+</style>
 <body>
   <h1>Web Components</h1>
+  <user-card id="userCard" imageUrl="https://semantic-ui.com/images/avatar2/large/kristy.png"> 
+    <span slot="my-email">123xxx@gmail.com</span>
+  </user-card>
 
-  <user-card> </user-card>
 
   <template id="userCardTemplate">
     <style>
@@ -76,30 +83,50 @@
     class UserCard extends HTMLElement {
       constructor() {
         super();
-        var image = document.createElement('img');
-        image.src = 'https://semantic-ui.com/images/avatar2/large/kristy.png';
-        image.classList.add('image');
+        // template 方式
+        var templateElem = document.getElementById('userCardTemplate');
+        // 获取<template>节点以后，克隆了它的所有子元素，这是因为可能有多个自定义元素的实例，这个模板还要留给其他实例使用，所以不能直接移动它的子元素。
+        var content = templateElem.content.cloneNode(true);
 
-        var container = document.createElement('div');
-        container.classList.add('container');
+        // 获取参数
+        content.querySelector('.image').setAttribute('src', this.getAttribute('imageUrl'));
 
-        var name = document.createElement('p');
-        name.classList.add('name');
-        name.innerText = 'User Name';
+        // 是否开启 Shadow DOM
+        var shadow = this.attachShadow( { mode: 'closed' } );
+        shadow.appendChild(content);
 
-        var email = document.createElement('p');
-        email.classList.add('email');
-        email.innerText = 'yourmail@some-email.com';
-
-        var button = document.createElement('button');
-        button.classList.add('button');
-        button.innerText = 'Follow';
-
-        container.append(name, email, button);
-        this.append(image, container);
+        // 事件绑定
+        this.$button = shadow.querySelector('button');
+        this.$button.addEventListener('click', () => {
+          this.$button.innerText = "NEW TEXT"
+        });
       }
+
+      /*********生命周期**********/
+      // 当自定义元素第一次被连接到文档DOM时被调用
+      connectedCallback() {
+        console.log('connected')
+      }
+      // 当自定义元素与文档DOM断开连接时被调用。
+      disconnectedCallback() {
+        console.log('disconnectedCallback')
+      }
+
+      // 当自定义元素被移动到新文档时被调用
+      adoptedCallback() {
+        console.log('adoptedCallback')
+      }
+
+      // 当自定义元素的一个属性被增加、移除或更改时被调用
+      attributeChangedCallback() {
+        console.log('attributeChangedCallback')
+      }
+
     }
     window.customElements.define('user-card', UserCard);
+    var shadowroot = document.getElementById('userCard').shadowRoot;
+    console.log('shadowroot:', shadowroot);
+
   </script>
 </body>
 </html>
