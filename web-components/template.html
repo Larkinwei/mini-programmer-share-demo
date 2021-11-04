@@ -17,6 +17,7 @@
     <span slot="my-email">123xxx@gmail.com</span>
   </user-card>
 
+  <video></video>
 
   <template id="userCardTemplate">
     <style>
@@ -124,6 +125,7 @@
 
     }
     window.customElements.define('user-card', UserCard);
+
     var shadowroot = document.getElementById('userCard').shadowRoot;
     console.log('shadowroot:', shadowroot);
 
